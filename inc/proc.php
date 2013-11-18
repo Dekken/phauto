@@ -1,0 +1,7 @@
+<?
+
+namespace phautoop;
+
+class Process{}
+
+?>

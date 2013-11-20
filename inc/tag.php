@@ -42,7 +42,7 @@ class Tag{
 		else print ">";
 
 		if(strlen($this->v) > 0){
-			if(($tabs * 5) + strlen($this->v) > 20){
+			if(($tabs * 5) + strlen($this->v) > 70){
 				print "\n";
 				for($t = 0; $t < $tabs + 1; $t++) print "\t";
 			}

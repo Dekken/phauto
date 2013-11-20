@@ -13,126 +13,97 @@ class ORMException extends AnException{
 }
 
 class ORMObject{
+	private $fs;
+	private $t;
+	public function __construct($t, $fs){
+		$this->t  = $t;
+		$this->fs = $fs;
+	}
+	public function all()	{ return $this->fs;}
+	public function table()	{ 
+		$GLOBALS["DBG"]->inf(__FILE__, __LINE__, $this->t->name());
+		return $this->t; 
+	}
+	public function get($f)	{
+		if(!isset($fs[$f]))
+			throw new ORMException("$f is not a field on table $t->");
+		return $fs[$f];
+	}
+
+	public function save(){
+		$GLOBALS["ORM"]->save($this);		
+	}
+}
+
+class ORMTable{
 	private $c; //Columns in table
-	private $t; //Table in db
-	private $d; //DB type	
-	public function __construct($t = "", $c = array(), $dbt = "mysql"){
+	private $n; //Table in db
+	private $db; 
+	public function __construct($n, $c = array()){
 		$this->c = $c;
-		$this->t = $t;
-		$this->dbt = $dbt;		
+		$this->n = $n;
+	}
+	public function setDB($db){
+		$this->db = $db;
 	}
 	public function cols(){
 		return $this->c;
 	}
-	public function table(){
-		return $this->t;
+	public function name(){
+		return $this->n;
 	}
-}
+	public function get($oid){
+		$sql = "SELECT * FROM $this->n WHERE o_id = :o_id LIMIT 1";
+		$q = $this->db->prepare($sql);
+		$q->bindValue(':o_id', $oid);		
+		$rs = $this->db->query($q);		
+		$fs;
+		foreach($rs as $k => $v)
+			$fs[$k] = $v;
 
-class ORMColumn{
-	private $t;
-	private $n;
-	private $null;
-	private $pk;
-	private $ai;
-	public function __construct($v){
-		$this->t 	= $v["type"];
-		$this->n 	= $v["name"];
-		$this->null = isset($v["null"])		? $v["null"]	: true;
-		$this->pk 	= isset($v["pk"])		? $v["pk"]		: false;
-		$this->ai 	= isset($v["autoInc"]) 	? $v["autoInc"] : false;
+		return new ORMObject($this, $fs);
 	}
-	public function name(){ return $this->n;}
 }
 
 class ORMManager{
-	private $classes;
+	private $tables;
 	private $db;
-	public function __construct($d, $db){
-		if(!OS::isDir($d)) throw new OSException("$d is not a file on local machine");
-		$this->db = $db;
-		$this->handleDirectory($d);
+	public function __construct($db){		
+		$this->db = $db;		
 	}
-
-	public function get($t){
-		if(!isset($this->classes[$t]))
+	public function db(){ return $this->db; }
+	public function addTable($n, $t){
+		$t->setDB($this->db);
+		$this->tables[$n] = $t;
+	}
+	public function table($t){
+		if(!isset($this->tables[$t]))
 			throw new ORMException("No object $t found");
-		return $this->classes[$t];
+		return $this->tables[$t];
 	}
-	public function all(){
-		return $this->classes;
+	public function tables(){
+		return $this->tables;
 	}
-	private function handleDirectory($d){
-		$ls = scandir($d);
-		foreach($ls as $e){
-			if(substr($e, 0, 1) === ".") continue;			
-			if(OS::isDir($e))
-				$this->handleDirectory($e);
-			else
-			if($e === "phautorm.xml")
-				$this->handleORMFile($d . "/" . $e);			
-		}		
-	}
-	private function handleORMFile($f){		
-		$GLOBALS["DBG"]->inf(__FILE__, __LINE__, "$f");
-		$xp = new XPather($f);
-
-		$xml = array("settings", "class");
-		foreach($xp->query("/phautorm/*") as $p)
-			if(!in_array($p->localName, $xml)) 
-				throw new XMLException("Malformed XML, unknown tag : " . $p->localName);
-		
-		$i = 1;
-		foreach($xp->get("/phautorm/class") as $c){
-			if(isset($c["text"]) && strlen($c["text"]) > 0)
-				throw new XMLException("Malformed XML, no text expected for class tag");
-			
-			if(!isset($c["atts"]["name"]))
-				throw new XMLException("Malformed XML, class tag requires name attribute");
-
-			$cols = array();
-			$xml = array("type" => 1, "name" => 1, "pk" => 0, "null" => 0, "autoInc" =>0);
-			$tf = array("pk", "null", "autoInc");
-			foreach($xp->get("/phautorm/class[$i]/*") as $f){
-				foreach($tf as $x)
-					if(isset($f["atts"][$x]))
-						if(strcasecmp($f["atts"][$x], "true") != 0 && strcasecmp($f["atts"][$x], "false") != 0)
-							throw new XMLException("Malformed XML, attribute $x is must be true or false");
-				
-				foreach($xml as $k => $v){
-					if(!isset($f["atts"][$k]) && $v)
-						throw new XMLException("Malformed XML, field tag requires $k attribute");
-					if(isset($f["atts"][$k]))
-						$col[$k] = $f["atts"][$k];					
-				}					
-				$cols[] = new ORMColumn($col);
-			}
-			
-			if(isset($c["atts"]["table"]) && isset($c["atts"]["db-type"]))
-				$this->classes[$c["atts"]["name"]] = new ORMObject($c["atts"]["table"], $cols, $c["atts"]["db-type"]);
-			else if(isset($c["atts"]["table"]))
-				$this->classes[$c["atts"]["name"]] = new ORMObject($c["atts"]["table"], $cols);
-			else if(isset($c["atts"]["db-type"]))
-				$this->classes[$c["atts"]["name"]] = new ORMObject($c["atts"]["name"], $cols, $c["atts"]["db-type"]);
-			else
-				$this->classes[$c["atts"]["name"]] = new ORMObject($c["atts"]["name"], $cols);
-
-			foreach($xp->query("/phautorm/class[$i]/*") as $p)
-				if($p->localName !== "field")
-					throw new XMLException("Malformed XML, unknown tag : " . $p->localName);
-			
-			
-			$i++;
+	public function save($oo){
+		$t = $oo->table();
+		$sql = "INSERT INTO " .$t->name(). " VALUES (";		
+		foreach($t->cols() as $c)
+			$sql .= ":" .$c. ", ";		
+		$sql = substr($sql, 0, strlen($sql) - 2) . ")";		
+		$q = $this->db->prepare($sql);
+		for($i = 0; $i < count($oo->all()); $i++){
+			if(is_string($oo->all()[$i]))	$q->bindValue(':'.$t->cols()[$i], "'".$oo->all()[$i]."'");
+			else 							$q->bindValue(':'.$t->cols()[$i], $oo->all()[$i]);
 		}
+		$this->db->exec($q);
 	}
-
-	
-	
-
+	public function delete($oo){
+		$t = $oo->table();
+		$sql = "DELETE FROM " .$t->name(). " WHERE o_id = :". $t->cols()[0]. " LIMIT 1";
+		$q = $this->db->prepare($sql);
+		$q->bindValue(':o_id', $oid);		
+		$this->db->exec($q);
+	}
 }
-
-
-
-
 
 ?>

@@ -1,18 +1,18 @@
 /*
- * phautoop.hpp
+ * session.hpp
  *
  *  Created on: 20 Jan 2013
  *      Author: philix
  */
 
-#ifndef _PHAUTOOP_SESSION_HPP_
-#define _PHAUTOOP_SESSION_HPP_
+#ifndef _PHAUTOP_SESSION_HPP_
+#define _PHAUTOP_SESSION_HPP_
 
-#include "phautoop/config.hpp"
+#include "phautop/config.hpp"
 
-#include "kul/threading.hpp"
+#include "kul/threads.hpp"
 
-namespace phautoop{
+namespace phautop{
 
 class Sessions;
 
@@ -87,4 +87,4 @@ class Sessions{
 
 
 };
-#endif /* _PHAUTOOP_SERVER_HPP_ */
+#endif /* _PHAUTOP_SERVER_HPP_ */

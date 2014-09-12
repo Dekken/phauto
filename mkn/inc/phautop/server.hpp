@@ -1,21 +1,21 @@
 /*
- * phautoop.hpp
+ * server.hpp
  *
  *  Created on: 20 Jan 2013
  *      Author: philix
  */
 
-#ifndef _PHAUTOOP_SERVER_HPP_
-#define _PHAUTOOP_SERVER_HPP_
+#ifndef _PHAUTOP_SERVER_HPP_
+#define _PHAUTOP_SERVER_HPP_
 
-#include "phautoop/config.hpp"
+#include "phautop/config.hpp"
 
 #include <stdio.h>
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-namespace phautoop{
+namespace phautop{
 
 
 class Server{
@@ -29,4 +29,4 @@ class Server{
 
 
 };
-#endif /* _PHAUTOOP_SERVER_HPP_ */
+#endif /* _PHAUTOP_SERVER_HPP_ */

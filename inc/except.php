@@ -1,6 +1,6 @@
 <?
 
-namespace phautoop;
+namespace phautop;
 
 abstract class AnException extends \Exception{
 	/*

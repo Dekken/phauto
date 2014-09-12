@@ -1,6 +1,6 @@
 <?
 
-namespace phautoop;
+namespace phautop;
 
 class Process{}
 

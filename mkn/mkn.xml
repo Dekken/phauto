@@ -1,6 +1,6 @@
 <maiken>
 	<project>
-		<name>phautoop</name>		
+		<name>phautop</name>		
 		<version>master</version>
 	</project>	
 	<dependencies>
@@ -13,36 +13,20 @@
 	<includes>
 		<include>./inc</include>
 	</includes>
-	<!-- used when no profile is specified -->
-	<build type="exe" mode="static" main="./main.cpp"> 
-		<env>
-			<vars><!-- modes = append/prepend/replace name IS CASE SENSITIVE!--></vars>
-		</env>		
-		<files>
-			<file type="cpp">
-				<args>
-					<arg>-std=c++0x</arg><arg>-D__GXX_EXPERIMENTAL_CXX0X__</arg>
-					<arg>-Wall</arg><arg>-fmessage-length=0</arg>
-					<arg>-O0</arg><arg>-g3</arg>
-				</args>
-			</file>
-		</files>
-	</build>
 	<profiles>
 		<!-- Name can anything, must be unique, is mandatory -->
-		<profile name="lin">  
+		<profile os="nix">  
 			<includes>
 				<include>./inc</include>
 			</includes>
 			<dependencies>
 				<dependency>
-					<name>kul.unix</name>
+					<name>kul.nix</name>
 					<version>master</version>
-					<profile>linr</profile>
-					<remote scm="git">http://www.github.com/Dekken/kul.unix.git</remote>
+					<remote scm="git">http://www.github.com/Dekken/kul.nix.git</remote>
 				</dependency>
 			</dependencies>
-			<build type="exe" mode="static" main="./main.cpp"> 
+			<build type="lib" mode="static" main="./main.cpp"> 
 				<files>
 					<file type="cpp">
 						<args>
@@ -55,7 +39,7 @@
 			</build>
 		</profile>
 
-		<profile name="win">  
+		<profile os="win">  
 			<dependencies>
 				<dependency>
 					<name>kul.win</name>
@@ -67,24 +51,15 @@
 				<include>./inc</include>
 			</includes>
 			<build type="exe" mode="static" main="main.cpp">
-				<env>
-					<vars>
-						<var name="PATH" mode="prepend">C:\apps\MVS2012\VC\bin</var>
-					</vars>
-				</env>
 				<files>
 					<file type="cpp">
-						<archiver>lib</archiver>
-						<assembler>as</assembler>
-						<compiler>cl</compiler>
-						<linker>link</linker>
 						<args><arg>/EHsc</arg></args>
 					</file>
 				</files>
 			</build>
 		</profile>
 
-		<profile name="mac">  
+		<profile os="mac">  
 			<dependencies>
 				<dependency>
 					<name>kul.mac</name>
@@ -97,10 +72,6 @@
 			<includes>
 				<include>./inc</include>
 			</includes>
-			<libraries>
-				<library>kul</library>
-				<library>kul.mac</library>
-			</libraries>
 			<build type="exe" mode="static" main="./main.cpp"> 
 				<files>
 					<file type="cpp">

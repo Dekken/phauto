@@ -1,6 +1,6 @@
 <?
 
-namespace phautoop;
+namespace phautop;
 
 // USAGE
 // $dbg->inf(__FILE__, __LINE__, "MESSAGE");

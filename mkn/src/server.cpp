@@ -1,9 +1,9 @@
 
 
-#include "phautoop/server.hpp"
+#include "phautop/server.hpp"
 
 // Inspiration taken from http://www.tutorialspoint.com/unix_sockets/socket_server_example.htm
-void phautoop::Server::start(){
+void phautop::Server::start(){
 	int sockfd, newsockfd, portno;
 	socklen_t clilen;
 	char buffer[256];
@@ -38,7 +38,7 @@ void phautoop::Server::start(){
 		bzero(buffer,256);
 		n = read(newsockfd,buffer,255);
 	 	if (n < 0) perror("ERROR reading from socket");
-	 	//LOG(INFO) << "buffer: " << buffer;
+
 	 	std::string b(buffer);
 	 	std::string d = kul::String::split(b, kul::OS::newLine())[0];
 	 	
@@ -53,6 +53,6 @@ void phautoop::Server::start(){
 		close(newsockfd);
 	}
 }
-void phautoop::Server::handle(const std::string& data){
+void phautop::Server::handle(const std::string& data){
 	LOG(INFO) << "data: " << data;
 }

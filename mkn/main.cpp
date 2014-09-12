@@ -1,7 +1,7 @@
 
 
-#include "phautoop/session.hpp"
-#include "phautoop/server.hpp"
+#include "phautop/session.hpp"
+#include "phautop/server.hpp"
 
 
 
@@ -10,11 +10,11 @@
 int main( int argc, char *argv[] ){
 	google::InitGoogleLogging(argv[0]);
 
-	phautoop::Sessions* sessions = phautoop::Sessions::INSTANCE();
+	phautop::Sessions* sessions = phautop::Sessions::INSTANCE();
 	sessions->addSession("KAKOW");
 
 	
 
-	phautoop::Server server(6666);
+	phautop::Server server(6666);
 	server.start();
 }

@@ -1,6 +1,6 @@
 <?
 
-namespace phautoop;
+namespace phautop;
 
 include_once("./conf.php");
 include_once("./inc/tag.php");

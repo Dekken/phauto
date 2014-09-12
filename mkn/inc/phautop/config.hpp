@@ -5,10 +5,8 @@
  *      Author: philix
  */
 
-#ifndef _PHAUTOOP_CONFIG_HPP_
-#define _PHAUTOOP_CONFIG_HPP_
-
-#include "glog/logging.h"
+#ifndef _PHAUTOP_CONFIG_HPP_
+#define _PHAUTOP_CONFIG_HPP_
 
 #include "kul/os.hpp"
 #include "kul/cli.hpp"
@@ -16,7 +14,7 @@
 #include "kul/xml.hpp"
 #include "kul/except.hpp"
 
-namespace phautoop{
+namespace phautop{
 
 class Exception : public kul::Exception{
 	public:
@@ -30,4 +28,4 @@ class Config{
 
 
 };
-#endif /* _PHAUTOOP_CONFIG_HPP_ */
+#endif /* _PHAUTOP_CONFIG_HPP_ */

@@ -1,6 +1,6 @@
 <?
 
-namespace phautoop;
+namespace phautop;
 
 include_once("xml.php");
 include_once("sql.php");

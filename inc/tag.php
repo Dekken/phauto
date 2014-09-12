@@ -1,6 +1,6 @@
 <?
 
-namespace phautoop;
+namespace phautop;
 
 //class TextLabel 		__construct(text = "")
 //class TextInput 		__construct(name)

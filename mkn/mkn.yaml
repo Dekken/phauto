@@ -2,7 +2,7 @@
 name: phautoop
 verison: master
 include: ./inc
-dependencies
+dependencies:
   - name: kul
     version: master
     scm:

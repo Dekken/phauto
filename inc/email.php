@@ -1,6 +1,6 @@
-<?
+<?php
 
-namespace phautop;
+namespace phauto;
 
 include_once("./os.php");
 

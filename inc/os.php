@@ -1,6 +1,6 @@
-<?
+<?php
 
-namespace phautop;
+namespace phauto;
 
 include_once("except.php");
 
@@ -10,11 +10,10 @@ class OSException extends AnException{
 	}
 }
 
-class OS{	
-	public static function isFile($f){ return is_file($f); }
-	public static function isDir($d) { return is_dir($d); }
-}
-
+// class OS{
+// 	public static function isFile($f){ return is_file($f); }
+// 	public static function isDir($d) { return is_dir($d); }
+// }
 
 
 

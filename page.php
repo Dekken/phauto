@@ -1,8 +1,8 @@
 <?
 
-namespace phautop;
+namespace phauto;
 
-include_once("./conf.php");
+// include_once("./conf.php");
 include_once("./inc/tag.php");
 
 abstract class Page{

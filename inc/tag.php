@@ -1,6 +1,6 @@
-<?
+<?php
 
-namespace phautop;
+namespace phauto;
 
 //class TextLabel 		__construct(text = "")
 //class TextInput 		__construct(name)

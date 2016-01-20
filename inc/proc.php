@@ -1,6 +1,6 @@
-<?
+<?php
 
-namespace phautop;
+namespace phauto;
 
 class Process{}
 

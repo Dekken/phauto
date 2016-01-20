@@ -1,6 +1,6 @@
-<?
+<?php
 
-namespace phautop;
+namespace phauto;
 
 abstract class AnException extends \Exception{
 	/*

@@ -1,8 +1,7 @@
-<?
+<?php
 
-namespace phautop;
+namespace phauto;
 
-include_once("xml.php");
 include_once("sql.php");
 include_once("except.php");
 
@@ -40,8 +39,8 @@ class ORMTable{
 	private $n; //Table in db
 	private $db; 
 	public function __construct($n, $c = array()){
-		$this->c = $c;
 		$this->n = $n;
+		$this->c = $c;
 	}
 	public function setDB($db){
 		$this->db = $db;
@@ -58,9 +57,7 @@ class ORMTable{
 		$q->bindValue(':o_id', $oid);		
 		$rs = $this->db->query($q);		
 		$fs;
-		foreach($rs as $k => $v)
-			$fs[$k] = $v;
-
+		foreach($rs as $k => $v) $fs[$k] = $v;
 		return new ORMObject($this, $fs);
 	}
 }
@@ -73,8 +70,8 @@ class ORMManager{
 	}
 	public function db(){ return $this->db; }
 	public function addTable($n, $t){
-		$t->setDB($this->db);
 		$this->tables[$n] = $t;
+		$t->setDB($this->db);
 	}
 	public function table($t){
 		if(!isset($this->tables[$t]))
